@@ -1,1 +1,28 @@
 language: java
+
+before_deploy:
+- git config --global user.email "builds@travis-ci.com"
+- git config --global user.name "Travis CI"
+- export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
+- git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+- git push -q https://$TAGPERM@github.com/XWiki-IP-A7/XWiki-IP-A7 --tags
+- ls -R
+
+deploy:
+  provider: releases
+  api_key:
+    secure: vIgPzu9fJWUnFtxYSJGlFBL+Bw8zW/Sc/hRhGSg7ZZbk1wNqrcZ1eaK6t8j9XWC9Xd0y29cplOd8nqaIeaCFUSJ9wGB/cyyfBDlIDN4djL7Mxxc2MRnhKXmGbQy0j2VoVShMw9HJ88N08L+02tIknhW0DAK1LdB90d0w0rhJvNatq2BFWXr9qi6g5Qt3lJrGljvbm+H/d+8+f6Cke7e/hdBXxLwV7CO44KNOE7maDvrLmPkFU5erXAPoa/R79rRKuu76SUyK9z2tT83mOMVXczAz59EwZO30b4P5cJIzRBlcEIZDohGcstAdHl6wwbnoZFeOQm4AFkn9T/O479pQVLD+oazZSvrTG0HKAYzBTmAb6AFoujve/r7n3jjQymvBeoR+uHCMmjoRrD7wycc4HCT0U1oidv/Da7vYCrsv7JKg4sMT8vYs7CAam+kl4GivxEFanhw8ymn+MGDhQew208e3Z5x25XkJec0Tpa2Do5tZtMu1jPX1S0HfqWk+K41cAffNtpREDoeQ2YCW8BtXk0l05c4XhWtPwz2Bvc1KCcUBilneAjlUyySjLsmnc7YAK4geVJU39zOzllhDIOYvRwq65EtsOtQSvs36Gf51I9BdM0g6Ak6QBGLrknHttraju1MDPw8WUR6U7lS3+UlFAegppB019SueqibEq5INbts=
+  skip_cleanup: true
+  file: target/application-bachelorsandmastersmanagement.xar
+  on:
+    repo: XWiki-IP-A7/XWiki-IP-A7
+    tags: false
+    all_branches: true
+
+branches:
+  except:
+  - "/^*-v[0-9]/"
+
+env:
+  global:
+    secure: nMW16oPz8LVJcu0+0PBhyYwPN9vOd1+QbxRnbKEVh0QWjwekPnS39GTCcXZxKj/ZyNhnEDjJ06gOMdEFUep6SD7n6O3oJsQkNkSwffWsE7vTiWZKMFo9sC1HFQ5aR/fTDIb/L/Cjc3j0ZDECFv+Ezln7WLuGatFBnWOxpxoN1dnivhGdUPBHHqLNZfK3/fIJZJiHUpcKEkpHDQYUzErxdT3P6HSe8K3i03UJwXv+tCt0UtyKqka03lCg1z4VEu+WtKeSHdKI/RnD3spdxlVaQ9oQRUhEYpak5zJjpNyBrVlN4QM0L2aTdCyZKyM9rDJIXd3HNbMtf2gdxIfSenv4OCkebxv4b1o+nDvwmPlrR5g+/TLTevnxOYkWKB3jwECPLjcGsASXDyZc/swBKd1T5VUCYVou6BJ2ne0Ng4U3Rp4m/MweSmZgvcUjTZdb7XbBjiapzK5qape0DbIa9xTSCe79CsNwnM/M67FasWnp+jSmompewYLwuCfqJzc+VuSn4wGL+p5juTPRx4hEAUswtyXfhYgSgSTo2KcVBrUR+1EbwwXfA3FNOozUALSs5vjSit6gL3vPe1yjYmCLls4WQy7DrtwcglDAr9/w6mpln54ZB8BZqglGcVYzEePif21LEMiCk0kyaPNh8Rbx/D2shBLZxoIkQ3FvqlbeBgnoPPY=
